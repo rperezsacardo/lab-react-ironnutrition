@@ -27,30 +27,53 @@ class App extends Component {
       return el.name === name;
     });
 
-    food[0].quantity += value;
+    food[0].quantity += value ? value : 1;
     this.setState({
-      eatten: [...food],
+      eatten: [...this.state.eatten, ...food],
       totalCal: this.state.totalCal + food[0].quantity * food[0].calories
     });
+  };
+
+  handleChange = (event) => {
+    const { value, name } = event.target;
+    console.log(name);
+    this.setState({
+      [name]: value.toUpperCase()
+    });
+  };
+
+  handleSubmmit = (event) => {
+    event.preventDefault();
+    console.log(event);
   };
 
   render() {
     // const meals = this.meals;
     // console.log(this.mealBox);
-    console.log(this.state);
+    console.log(this.state.eatten);
     return (
       <div>
+        <form action="">
+          <input type="text" onChange={this.handleChange} name="search" id="" />
+        </form>
         <Container>
           {this.state.meals.map((el) => {
+            const nameUpperCased = el.name.toUpperCase();
+            const searchTerm = this.state.search;
+            console.log(searchTerm);
             return (
-              <MealBox
-                key={el.name}
-                name={el.name}
-                calories={el.calories}
-                image={el.image}
-                qtd={el.numb}
-                addMeal={this.addMeal}
-              />
+              <>
+                {nameUpperCased.includes(searchTerm) && (
+                  <MealBox
+                    key={el.name}
+                    name={el.name}
+                    calories={el.calories}
+                    image={el.image}
+                    qtd={el.numb}
+                    addMeal={this.addMeal}
+                  />
+                )}
+              </>
             );
           })}
         </Container>
@@ -58,13 +81,14 @@ class App extends Component {
           {this.state.eatten.map((el) => {
             return (
               <div>
-                <h6>{el.name}</h6>
-                <h6>{el.quantity}</h6>
+                <p>
+                  {el.name} x {el.quantity}
+                </p>
               </div>
             );
           })}
         </Container>
-        <Container>Total Calorires {this.state.totalCal}</Container>
+        <Container>Total Calorires: {this.state.totalCal}</Container>
       </div>
     );
   }
