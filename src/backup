@@ -1,0 +1,26 @@
+      <div>
+        <Container className="p-5">
+          {this.mealsbox.state.list.map((el, index) => {
+            return (
+              <div key={el.name}>
+                <img src={el.image} style={{ maxWidth: '10em' }} />
+                <div>
+                  <h5>{el.name}</h5>
+                  <small>{el.calories}</small>
+                </div>
+                <form>
+                  <input
+                    name="quantity"
+                    type="number"
+                    value={Number(this.state.quantity)}
+                    onChange={this.handleChange}
+                  />
+                  <Button name={el.name} onClick={this.addMeal}>
+                    +
+                  </Button>
+                </form>
+              </div>
+            );
+          })}
+        </Container>
+      </div>
